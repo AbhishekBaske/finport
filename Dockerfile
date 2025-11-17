@@ -54,6 +54,9 @@ RUN npm install -g serve
 # Copy built frontend from builder stage
 COPY --from=frontend-builder /app/frontend/build ./frontend/build
 
+# Copy redirects file for SPA routing
+COPY frontend/_redirects ./frontend/build/_redirects
+
 EXPOSE 3000
 
 CMD ["serve", "-s", "frontend/build", "-l", "3000"]

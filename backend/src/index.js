@@ -9,7 +9,9 @@ const websocket = require('./websocket');
 
 // CORS configuration
 const corsOptions = {
-  origin: process.env.ALLOWED_ORIGINS ? process.env.ALLOWED_ORIGINS.split(',') : ['http://localhost:3000'],
+  origin: process.env.NODE_ENV === 'production' 
+    ? ['https://finport-frontend.onrender.com', 'https://finport-unbk.onrender.com']
+    : process.env.ALLOWED_ORIGINS ? process.env.ALLOWED_ORIGINS.split(',') : ['http://localhost:3000'],
   credentials: true,
   optionsSuccessStatus: 200
 };
@@ -37,7 +39,8 @@ app.use('/api/user', userRoutes);
 websocket(http);
 
 const PORT = process.env.PORT || 5000;
-http.listen(PORT, () => {
+http.listen(PORT, '0.0.0.0', () => {
   console.log(`Backend server listening on port ${PORT}`);
   console.log(`Health check available at: http://localhost:${PORT}/health`);
+  console.log('Environment:', process.env.NODE_ENV);
 });

@@ -6,15 +6,38 @@ export default defineConfig({
   server: {
     port: 3000,
     host: '0.0.0.0',
-    proxy:{
-        '/api': 'http://localhost:5000',
+    proxy: {
+      '/api': {
+        target: process.env.NODE_ENV === 'production' 
+          ? 'https://finport-unbk.onrender.com' 
+          : 'http://localhost:5000',
+        changeOrigin: true,
+        secure: true
+      }
     }
   },
   preview: {
-    port: 3000,
+    port: process.env.PORT || 3000,
     host: '0.0.0.0'
   },
   build: {
     outDir: 'build',
+    assetsDir: 'assets',
+    rollupOptions: {
+      output: {
+        manualChunks: {
+          vendor: ['react', 'react-dom'],
+          charts: ['chart.js', 'react-chartjs-2'],
+          icons: ['react-icons']
+        }
+      }
+    }
   },
+  define: {
+    'process.env.VITE_API_URL': JSON.stringify(
+      process.env.NODE_ENV === 'production' 
+        ? 'https://finport-unbk.onrender.com'
+        : 'http://localhost:5000'
+    )
+  }
 });

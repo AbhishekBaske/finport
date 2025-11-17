@@ -30,10 +30,21 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const [isLoading, setIsLoading] = useState(true);
   const isAuthenticated = !!user;
 
+  // Get API URL from environment or fall back to production URL
+  const getApiUrl = () => {
+    if (typeof window !== 'undefined') {
+      return window.location.hostname === 'localhost' 
+        ? 'http://localhost:5000'
+        : 'https://finport-unbk.onrender.com';
+    }
+    return 'https://finport-unbk.onrender.com';
+  };
+
   const checkAuth = async () => {
     try {
       setIsLoading(true);
-      const response = await fetch('/api/user/verify-auth', {
+      const apiUrl = getApiUrl();
+      const response = await fetch(`${apiUrl}/api/user/verify-auth`, {
         credentials: 'include'
       });
       
@@ -57,7 +68,8 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
   const logout = async () => {
     try {
-      await fetch('/api/user/logout', {
+      const apiUrl = getApiUrl();
+      await fetch(`${apiUrl}/api/user/logout`, {
         method: 'POST',
         credentials: 'include'
       });

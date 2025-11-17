@@ -37,7 +37,7 @@ docker compose ps
 
 echo.
 echo 🏥 Testing health endpoints...
-curl -s http://localhost:4000/health 2>nul
+curl -s http://localhost:5000/health 2>nul
 if %ERRORLEVEL% equ 0 (
     echo ✅ Backend health check passed
 ) else (
@@ -47,10 +47,15 @@ if %ERRORLEVEL% equ 0 (
 echo.
 echo 🎉 Rebuild complete! 
 echo 📊 Frontend: http://localhost:3000
-echo 🔧 Backend: http://localhost:4000
-echo 🏥 Health: http://localhost:4000/health
+echo 🔧 Backend: http://localhost:5000  
+echo 🏥 Health: http://localhost:5000/health
+echo 🌐 Production Backend: https://finport-unbk.onrender.com
 echo.
 echo 📝 To check logs:
 echo    docker compose logs backend
 echo    docker compose logs frontend
+echo.
+echo 🚀 For Render deployment:
+echo    Frontend: npm run build && serve -s build
+echo    Backend: Already deployed at https://finport-unbk.onrender.com
 pause
