@@ -24,7 +24,7 @@ RUN npm install
 COPY backend ./
 
 # Copy frontend build output
-COPY --from=frontend-build /app/frontend/dist ./public
+COPY --from=frontend-build /app/frontend/build ./public
 
 # Install concurrently to run both servers
 RUN npm install -g concurrently serve
