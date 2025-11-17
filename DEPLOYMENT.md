@@ -1,6 +1,17 @@
 # Finport - Deployment Guide
 
-This project includes multiple deployment options for the full-stack Finport application.
+This project uses a **single Dockerfile** in the root directory with multi-stage builds for both frontend and backend services.
+
+## Architecture
+
+```
+📁 finport/
+├── 🐳 Dockerfile          # Single multi-stage Dockerfile
+├── 🐳 docker-compose.yml  # Service orchestration
+├── 📦 backend/            # Node.js API
+├── 🎨 frontend/           # React + Vite app
+└── 🚀 deploy.bat/.sh      # One-click deployment
+```
 
 ## Prerequisites
 
@@ -36,13 +47,13 @@ sudo chmod +x /usr/local/bin/docker-compose
 
 ### 🐳 Docker Deployment (Production-Ready)
 
-**Quick Start:**
+**One-Click Deployment:**
 ```bash
 # Windows
-test-build.bat
+deploy.bat
 
 # Linux/Mac
-chmod +x test-build.sh && ./test-build.sh
+chmod +x deploy.sh && ./deploy.sh
 ```
 
 **Manual Steps:**
@@ -50,29 +61,16 @@ chmod +x test-build.sh && ./test-build.sh
 # Build and start all services
 docker compose up --build -d
 
-# Or use the older docker-compose syntax
-docker-compose up --build -d
+# Or test individual builds first
+docker build --target backend-production -t finport-backend .
+docker build --target frontend-production -t finport-frontend .
 ```
 
-### 💻 Local Development
-
-**Backend:**
-```bash
-cd backend
-npm install
-# Set up your PostgreSQL database
-# Update DATABASE_URL in .env file
-npx prisma generate
-npx prisma migrate dev
-npm start
-```
-
-**Frontend:**
-```bash
-cd frontend
-npm install
-npm run dev
-```
+**Build Targets Available:**
+- `frontend-builder` - Frontend build stage
+- `backend-builder` - Backend build stage  
+- `frontend-production` - Production frontend server
+- `backend-production` - Production backend server
 
 ## Services
 
