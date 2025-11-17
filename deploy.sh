@@ -1,47 +1,34 @@
 #!/bin/bash
 
-# Quick deployment script for Render.com
-# Run this script to prepare your project for Render deployment
+echo "🚀 Starting Finport Deployment..."
 
-set -e
+# Stop any running containers
+echo "Stopping existing containers..."
+docker-compose down
 
-echo "🚀 Preparing Finport for Render.com deployment..."
+# Remove old images (optional - uncomment if you want to rebuild everything)
+# docker-compose down --rmi all
 
-# Check if we're in the right directory
-if [ ! -f "render.yaml" ]; then
-    echo "❌ Error: render.yaml not found. Make sure you're in the project root directory."
-    exit 1
-fi
+# Build and start the services
+echo "Building and starting services..."
+docker-compose up --build -d
 
-echo "📦 Installing dependencies..."
+# Wait for services to start
+echo "Waiting for services to start..."
+sleep 10
 
-# Install backend dependencies
-echo "Installing backend dependencies..."
-cd backend
-npm install
-cd ..
+# Check service health
+echo "Checking service status..."
+docker-compose ps
 
-# Install frontend dependencies  
-echo "Installing frontend dependencies..."
-cd frontend
-npm install
-cd ..
-
-echo "🔧 Generating Prisma client..."
-cd backend
-npx prisma generate
-cd ..
-
-echo "🏗️ Testing frontend build..."
-cd frontend
-npm run build
-cd ..
-
-echo "✅ Project ready for Render deployment!"
 echo ""
-echo "Next steps:"
-echo "1. Push your code to GitHub"
-echo "2. Connect your repository to Render.com"
-echo "3. Render will automatically detect and use the render.yaml configuration"
+echo "🎉 Deployment complete!"
 echo ""
-echo "📖 For detailed instructions, see RENDER_DEPLOYMENT.md"
+echo "Services are now running:"
+echo "📊 Frontend (Vite): http://localhost:3000"
+echo "🔧 Backend API: http://localhost:4000"
+echo "🗄️ PostgreSQL: localhost:5432"
+echo "📦 Redis: localhost:6379"
+echo ""
+echo "To stop all services: docker-compose down"
+echo "To view logs: docker-compose logs -f"
