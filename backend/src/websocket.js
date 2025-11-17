@@ -4,7 +4,11 @@
 // Basic WebSocket setup with Finnhub official client
 const finnhub = require('finnhub');
 const FINNHUB_API_KEY = process.env.FINNHUB_API_KEY || 'YOUR_FINNHUB_API_KEY_HERE';
-const finnhubClient = new finnhub.DefaultApi(FINNHUB_API_KEY);
+
+// Initialize the API client
+const api_key = finnhub.ApiClient.instance.authentications['api_key'];
+api_key.apiKey = FINNHUB_API_KEY;
+const finnhubClient = new finnhub.DefaultApi();
 
 function fetchStockCandles(symbol) {
   return new Promise((resolve) => {

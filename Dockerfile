@@ -40,6 +40,9 @@ RUN npx prisma generate
 # Copy backend source code
 COPY backend/ ./
 
+# Make sure .env file is included
+COPY backend/.env ./
+
 # Stage 3: Production Frontend
 FROM node:18-alpine AS frontend-production
 
