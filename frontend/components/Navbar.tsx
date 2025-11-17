@@ -1,187 +1,11 @@
-import React, { useState, useEffect, useRef } from "react";
-import styled from "styled-components";
-import { gsap } from "gsap";
+import React from "react";
 import { useAuth } from "../context/AuthContext";
 import { useNavigate } from "react-router-dom";
 
-/* ────────────────────────────────────────────── */
-/* Styled Components */
-/* ────────────────────────────────────────────── */
-
-const NAV_HEIGHT = "78px";
-
-const Nav = styled.nav`
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: ${NAV_HEIGHT};
-  z-index: 999;
-  background: white;
-  border-bottom: 1px solid #e5e7eb;
-  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.05);
-  padding: 16px 32px;
-  opacity: 0;
-  transform: translateY(-30px);
-`;
-
-const Container = styled.div`
-  max-width: 1200px;
-  margin: auto;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-`;
-
-const Logo = styled.a`
-  font-size: 1.9rem;
-  font-weight: 800;
-  letter-spacing: -1px;
-  text-decoration: none;
-  background: linear-gradient(135deg, #4f46e5, #818cf8);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-`;
-
-const DesktopNav = styled.div`
-  display: flex;
-  gap: 26px;
-  align-items: center;
-
-  @media (max-width: 768px) {
-    display: none;
-  }
-`;
-
-const MobileToggle = styled.button`
-  display: none;
-  background: none;
-  border: none;
-  font-size: 1.9rem;
-  cursor: pointer;
-
-  @media (max-width: 768px) {
-    display: block;
-  }
-`;
-
-const MobileMenu = styled.div`
-  padding: 20px;
-  border-top: 1px solid #eee;
-  background: white;
-  display: flex;
-  flex-direction: column;
-  gap: 14px;
-  opacity: 0;
-`;
-
-const NavLink = styled.a`
-  text-decoration: none;
-  padding: 8px 14px;
-  border-radius: 8px;
-  font-weight: 500;
-  font-size: 0.95rem;
-  color: #4b5563;
-  transition: 0.25s;
-
-  &:hover {
-    color: #4f46e5;
-    transform: translateY(-2px);
-    background: rgba(79, 70, 229, 0.1);
-  }
-`;
-
-const CTAButton = styled.button`
-  background: #4f46e5;
-  color: white;
-  font-weight: 600;
-  padding: 10px 22px;
-  border-radius: 12px;
-  border: none;
-  cursor: pointer;
-  font-size: 0.95rem;
-  transition: 0.25s;
-
-  &:hover {
-    background: #4338ca;
-    transform: translateY(-2px);
-  }
-`;
-
-const LogoutButton = styled.button`
-  background: transparent;
-  border: 1px solid #ff6b6b;
-  color: #ff6b6b;
-  padding: 8px 16px;
-  border-radius: 8px;
-  font-size: 0.9rem;
-  cursor: pointer;
-  transition: 0.25s;
-
-  &:hover {
-    background: #ff6b6b;
-    color: white;
-    transform: translateY(-2px);
-  }
-`;
-
-const Welcome = styled.span`
-  font-size: 0.9rem;
-  font-weight: 600;
-  color: #4f46e5;
-`;
-
-/* ────────────────────────────────────────────── */
-/* Component */
-/* ────────────────────────────────────────────── */
-
 const Navbar: React.FC = () => {
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [isMenuOpen, setIsMenuOpen] = React.useState(false);
   const { isAuthenticated, user, logout } = useAuth();
   const navigate = useNavigate();
-
-  const navRef = useRef<HTMLDivElement>(null);
-  const menuRef = useRef<HTMLDivElement>(null);
-
-  /* FADE-IN */
-  useEffect(() => {
-    gsap.to(navRef.current, {
-      opacity: 1,
-      y: 0,
-      duration: 0.7,
-      ease: "power3.out",
-    });
-  }, []);
-
-  /* SCROLL HIDE / SHOW */
-  useEffect(() => {
-    let last = window.scrollY;
-
-    const handler = () => {
-      const curr = window.scrollY;
-
-      gsap.to(navRef.current, {
-        y: curr > last ? -90 : 0,
-        duration: 0.35,
-        ease: "power3.out",
-      });
-
-      last = curr;
-    };
-
-    window.addEventListener("scroll", handler);
-    return () => window.removeEventListener("scroll", handler);
-  }, []);
-
-  /* Mobile menu animation */
-  useEffect(() => {
-    gsap.to(menuRef.current, {
-      opacity: isMenuOpen ? 1 : 0,
-      height: isMenuOpen ? "auto" : 0,
-      duration: 0.25,
-      ease: "power2.out",
-    });
-  }, [isMenuOpen]);
 
   const handleLogout = async () => {
     await logout();
@@ -189,52 +13,239 @@ const Navbar: React.FC = () => {
   };
 
   return (
-    <Nav ref={navRef}>
-      <Container>
-        <Logo href="/">📈 Finport</Logo>
+    <>
+      <style>
+        {`
+          .nav-link:hover {
+            color: #4f46e5 !important;
+            background: rgba(79,70,229,0.1) !important;
+            transform: translateY(-2px);
+          }
 
-        <DesktopNav>
-          <NavLink href="/">Home</NavLink>
-          {isAuthenticated && <NavLink href="/dashboard">Dashboard</NavLink>}
+          .glow-btn:hover {
+            transform: translateY(-2px);
+            background-color: #4338ca !important;
+          }
 
-          {isAuthenticated ? (
-            <>
-              <Welcome>Welcome, {user?.name}</Welcome>
-              <LogoutButton onClick={handleLogout}>Logout</LogoutButton>
-            </>
-          ) : (
-            <>
-              <NavLink href="/signin">Sign In</NavLink>
-              <a href="/signup">
-                <CTAButton>Get Started</CTAButton>
-              </a>
-            </>
-          )}
-        </DesktopNav>
+          .logout-btn:hover {
+            background:#ff6b6b !important;
+            color:white !important;
+            transform:translateY(-2px);
+          }
 
-        <MobileToggle onClick={() => setIsMenuOpen(!isMenuOpen)}>☰</MobileToggle>
-      </Container>
+          @media (max-width: 768px) {
+            .desktop-nav { display:none !important; }
+            .mobile-toggle { display:block !important; }
+          }
+          @media (min-width: 769px) {
+            .desktop-nav { display:flex !important; }
+            .mobile-menu { display:none !important; }
+          }
+        `}
+      </style>
 
-      <MobileMenu ref={menuRef}>
-        <NavLink href="/">Home</NavLink>
-        {isAuthenticated && <NavLink href="/dashboard">Dashboard</NavLink>}
+      <nav
+        style={{
+          position: "fixed",
+          top: 0,
+          left: 0,
+          right: 0,
+          zIndex: 999,
+          background: "white",
+          borderBottom: "1px solid #e5e7eb",
+          boxShadow: "0 4px 12px rgba(0,0,0,0.04)",
+          padding: "16px 32px",
+        }}
+      >
+        <div
+          style={{
+            maxWidth: "1200px",
+            margin: "0 auto",
+            display: "flex",
+            justifyContent: "space-between",
+            alignItems: "center",
+          }}
+        >
+          {/* LOGO */}
+          <a
+            href="/"
+            style={{
+              fontSize: "1.8rem",
+              fontWeight: 800,
+              background: "linear-gradient(135deg,#4f46e5,#818cf8)",
+              WebkitBackgroundClip: "text",
+              WebkitTextFillColor: "transparent",
+              letterSpacing: "-1px",
+              textDecoration: "none",
+            }}
+          >
+            📈 Finport
+          </a>
 
-        {isAuthenticated ? (
-          <>
-            <Welcome>Welcome, {user?.name}</Welcome>
-            <LogoutButton onClick={handleLogout}>Logout</LogoutButton>
-          </>
-        ) : (
-          <>
-            <NavLink href="/signin">Sign In</NavLink>
-            <a href="/signup">
-              <CTAButton>Get Started</CTAButton>
+          {/* DESKTOP MENU */}
+          <div
+            className="desktop-nav"
+            style={{ display: "flex", gap: "24px", alignItems: "center" }}
+          >
+            <a href="/" className="nav-link" style={linkStyle}>
+              Home
             </a>
-          </>
+            <a href="/markets" className="nav-link" style={linkStyle}>
+              Markets
+            </a>
+            <a href="/research" className="nav-link" style={linkStyle}>
+              Research
+            </a>
+
+            {isAuthenticated && (
+              <a href="/dashboard" className="nav-link" style={linkStyle}>
+                Dashboard
+              </a>
+            )}
+
+            {isAuthenticated ? (
+              <>
+                <span style={welcomeStyle}>Welcome, {user?.name}</span>
+
+                <button
+                  className="logout-btn"
+                  style={logoutBtn}
+                  onClick={handleLogout}
+                >
+                  Logout
+                </button>
+              </>
+            ) : (
+              <>
+                <a href="/signin" className="nav-link" style={linkStyle}>
+                  Sign In
+                </a>
+
+                <a href="/signup">
+                  <button className="glow-btn" style={ctaButton}>
+                    Get Started
+                  </button>
+                </a>
+              </>
+            )}
+          </div>
+
+          {/* MOBILE MENU BUTTON */}
+          <button
+            className="mobile-toggle"
+            style={{
+              display: "none",
+              background: "none",
+              border: "none",
+              fontSize: "1.8rem",
+              cursor: "pointer",
+            }}
+            onClick={() => setIsMenuOpen(!isMenuOpen)}
+          >
+            ☰
+          </button>
+        </div>
+
+        {/* MOBILE MENU */}
+        {isMenuOpen && (
+          <div
+            className="mobile-menu"
+            style={{
+              padding: "20px",
+              borderTop: "1px solid #eee",
+              background: "white",
+            }}
+          >
+            <div style={{ display: "flex", flexDirection: "column", gap: "14px" }}>
+              <a href="/" className="nav-link" style={linkStyle}>
+                Home
+              </a>
+              <a href="/markets" className="nav-link" style={linkStyle}>
+                Markets
+              </a>
+              <a href="/research" className="nav-link" style={linkStyle}>
+                Research
+              </a>
+
+              {isAuthenticated && (
+                <a href="/dashboard" className="nav-link" style={linkStyle}>
+                  Dashboard
+                </a>
+              )}
+
+              {isAuthenticated ? (
+                <>
+                  <span style={welcomeStyle}>Welcome, {user?.name}</span>
+                  <button
+                    className="logout-btn"
+                    style={logoutBtn}
+                    onClick={handleLogout}
+                  >
+                    Logout
+                  </button>
+                </>
+              ) : (
+                <>
+                  <a href="/signin" className="nav-link" style={linkStyle}>
+                    Sign In
+                  </a>
+
+                  <a href="/signup">
+                    <button className="glow-btn" style={ctaButton}>
+                      Get Started
+                    </button>
+                  </a>
+                </>
+              )}
+            </div>
+          </div>
         )}
-      </MobileMenu>
-    </Nav>
+      </nav>
+    </>
   );
+};
+
+/* ────────────────────────────────── */
+/* SHARED STYLE OBJECTS (MATCH HOME) */
+/* ────────────────────────────────── */
+
+const linkStyle: React.CSSProperties = {
+  color: "#4b5563",
+  fontWeight: 500,
+  textDecoration: "none",
+  padding: "8px 14px",
+  transition: "0.2s",
+  borderRadius: "8px",
+  fontSize: "0.95rem",
+};
+
+const ctaButton: React.CSSProperties = {
+  backgroundColor: "#4f46e5",
+  color: "white",
+  borderRadius: "12px",
+  border: "none",
+  padding: "10px 22px",
+  fontSize: "0.95rem",
+  fontWeight: 600,
+  cursor: "pointer",
+  transition: "0.3s",
+};
+
+const logoutBtn: React.CSSProperties = {
+  background: "transparent",
+  border: "1px solid #ff6b6b",
+  color: "#ff6b6b",
+  borderRadius: "8px",
+  padding: "8px 16px",
+  cursor: "pointer",
+  fontSize: "0.9rem",
+  transition: "0.3s",
+};
+
+const welcomeStyle: React.CSSProperties = {
+  fontSize: "0.9rem",
+  color: "#4f46e5",
+  fontWeight: 600,
 };
 
 export default Navbar;

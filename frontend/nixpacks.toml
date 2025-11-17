@@ -1,0 +1,9 @@
+# Nixpacks configuration for Railway frontend
+[phases.install]
+cmds = ["npm install"]
+
+[phases.build]
+cmds = ["npm run build"]
+
+[start]
+cmd = "npm run railway:start"

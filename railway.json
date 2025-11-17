@@ -1,0 +1,36 @@
+services:
+  backend:
+    source: backend/
+    build:
+      command: npm install && npx prisma generate
+    start:
+      command: npm start
+    variables:
+      NODE_ENV: production
+      PORT: ${{ RAILWAY_PORT }}
+    domains:
+      - finport-api.railway.app
+    healthcheck:
+      path: /
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  frontend:
+    source: frontend/
+    build:
+      command: npm install && npm run build
+    start:
+      command: npm run preview -- --port $PORT --host 0.0.0.0
+    variables:
+      NODE_ENV: production
+      PORT: ${{ RAILWAY_PORT }}
+      VITE_API_URL: ${{ backend.RAILWAY_PUBLIC_DOMAIN }}
+    domains:
+      - finport.railway.app
+
+  database:
+    plugin: postgresql
+    variables:
+      POSTGRES_DB: finport
+      POSTGRES_USER: finport_user

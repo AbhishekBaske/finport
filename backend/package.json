@@ -3,7 +3,12 @@
   "version": "1.0.0",
   "main": "src/index.js",
   "scripts": {
-    "start": "node src/index.js"
+    "start": "node src/index.js",
+    "build": "npx prisma generate",
+    "deploy": "npx prisma migrate deploy",
+    "postinstall": "npx prisma generate",
+    "railway:build": "npm install && npx prisma generate && npx prisma migrate deploy",
+    "railway:start": "node src/index.js"
   },
   "dependencies": {
     "@prisma/client": "^6.19.0",
@@ -11,6 +16,7 @@
     "cookie-parser": "^1.4.7",
     "dotenv": "^17.2.3",
     "express": "^4.18.2",
+    "finnhub": "^1.2.18",
     "jsonwebtoken": "^9.0.2",
     "pg": "^8.11.3",
     "socket.io": "^4.7.2"
