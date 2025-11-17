@@ -5,7 +5,7 @@ FROM node:20 AS frontend-build
 WORKDIR /app/frontend
 
 # Install dotenvx globally
-RUN curl -sSf https://dotenvx.sh | bash -s -- -b /usr/local/bin
+RUN curl -sSf https://dotenvx.sh | bash -s -- install -b /usr/local/bin
 
 COPY frontend/package*.json ./
 RUN npm install
@@ -21,7 +21,7 @@ FROM node:20
 WORKDIR /app
 
 # Install dotenvx globally
-RUN curl -sSf https://dotenvx.sh | bash -s -- -b /usr/local/bin
+RUN curl -sSf https://dotenvx.sh | bash -s -- install -b /usr/local/bin
 
 # Install backend
 COPY backend/package*.json ./
