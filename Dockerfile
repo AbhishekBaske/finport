@@ -69,6 +69,6 @@ RUN apk add --no-cache openssl
 # Copy backend from builder stage
 COPY --from=backend-builder /app/backend ./
 
-EXPOSE 4000
+EXPOSE 5000
 
 CMD ["npm", "start"]
