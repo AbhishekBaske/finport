@@ -1,29 +1,77 @@
-# Finport - Docker Deployment Guide
+# Finport - Deployment Guide
 
-This project includes Docker configurations for easy deployment of the full-stack Finport application.
+This project includes multiple deployment options for the full-stack Finport application.
 
-## Quick Start
+## Prerequisites
 
-### Prerequisites
-- Docker and Docker Compose installed
+### Option 1: Docker Deployment (Recommended)
+- **Install Docker Desktop**: Download from [docker.com](https://docs.docker.com/get-docker/)
+- **Install Docker Compose**: Usually included with Docker Desktop
 - Ports 3000, 4000, 5432, and 6379 available
 
-### Deployment
+### Option 2: Local Development
+- Node.js 18+ installed
+- PostgreSQL database running
+- Redis server running (optional)
 
-**Windows:**
+## Docker Installation
+
+### Windows:
+1. Download Docker Desktop from [docker.com](https://docs.docker.com/desktop/install/windows-install/)
+2. Install and restart your computer
+3. Verify installation: `docker --version` and `docker compose version`
+
+### Linux:
 ```bash
-deploy.bat
+# Install Docker
+curl -fsSL https://get.docker.com -o get-docker.sh
+sudo sh get-docker.sh
+
+# Install Docker Compose
+sudo curl -L "https://github.com/docker/compose/releases/download/v2.20.0/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
+sudo chmod +x /usr/local/bin/docker-compose
 ```
 
-**Linux/Mac:**
+## Deployment Options
+
+### 🐳 Docker Deployment (Production-Ready)
+
+**Quick Start:**
 ```bash
-chmod +x deploy.sh
-./deploy.sh
+# Windows
+test-build.bat
+
+# Linux/Mac
+chmod +x test-build.sh && ./test-build.sh
 ```
 
-**Manual Docker Compose:**
+**Manual Steps:**
 ```bash
+# Build and start all services
+docker compose up --build -d
+
+# Or use the older docker-compose syntax
 docker-compose up --build -d
+```
+
+### 💻 Local Development
+
+**Backend:**
+```bash
+cd backend
+npm install
+# Set up your PostgreSQL database
+# Update DATABASE_URL in .env file
+npx prisma generate
+npx prisma migrate dev
+npm start
+```
+
+**Frontend:**
+```bash
+cd frontend
+npm install
+npm run dev
 ```
 
 ## Services

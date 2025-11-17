@@ -1,4 +1,5 @@
-FROM node:18-alpine
+# Build stage
+FROM node:18-alpine as builder
 
 WORKDIR /app
 
@@ -14,8 +15,16 @@ COPY . .
 # Build the application
 RUN npm run build
 
-# Install serve to serve the built application
+# Production stage
+FROM node:18-alpine
+
+WORKDIR /app
+
+# Install serve globally
 RUN npm install -g serve
+
+# Copy built application from builder stage
+COPY --from=builder /app/build ./build
 
 # Expose port
 EXPOSE 3000
