@@ -90,12 +90,6 @@ const Navbar: React.FC = () => {
             <a href="/" className="nav-link" style={linkStyle}>
               Home
             </a>
-            <a href="/markets" className="nav-link" style={linkStyle}>
-              Markets
-            </a>
-            <a href="/research" className="nav-link" style={linkStyle}>
-              Research
-            </a>
 
             {isAuthenticated && (
               <a href="/dashboard" className="nav-link" style={linkStyle}>
@@ -159,12 +153,6 @@ const Navbar: React.FC = () => {
             <div style={{ display: "flex", flexDirection: "column", gap: "14px" }}>
               <a href="/" className="nav-link" style={linkStyle}>
                 Home
-              </a>
-              <a href="/markets" className="nav-link" style={linkStyle}>
-                Markets
-              </a>
-              <a href="/research" className="nav-link" style={linkStyle}>
-                Research
               </a>
 
               {isAuthenticated && (

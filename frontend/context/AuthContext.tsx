@@ -34,7 +34,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const getApiUrl = () => {
     if (typeof window !== 'undefined') {
       return window.location.hostname === 'localhost' 
-        ? 'http://localhost:5000'
+        ? 'http://localhost:4000'
         : 'https://finport-unbk.onrender.com';
     }
     return 'https://finport-unbk.onrender.com';

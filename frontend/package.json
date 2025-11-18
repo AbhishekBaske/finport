@@ -4,25 +4,21 @@
   "scripts": {
     "dev": "vite",
     "build": "vite build",
-    "start": "npm run build && vite preview --host 0.0.0.0 --port $PORT",
-    "preview": "vite preview",
-    "serve": "serve -s build -l $PORT"
+    "start": "vite preview"
   },
   "dependencies": {
     "@vitejs/plugin-react": "^5.1.1",
-    "chart.js": "^4.4.0",
+    "chart.js": "^4.5.1",
     "chartjs-chart-financial": "^0.2.1",
     "gsap": "^3.12.2",
     "react": "^18.2.0",
-    "react-chartjs-2": "^5.2.0",
+    "react-chartjs-2": "^5.3.1",
     "react-dom": "^18.2.0",
     "react-icons": "^5.5.0",
     "react-router-dom": "^7.9.6",
-    "serve": "^14.2.3",
-    "socket.io-client": "^4.7.2",
+    "socket.io-client": "^4.8.1",
     "styled-components": "^6.1.1",
-    "vite": "^7.2.2",
-    "zustand": "^4.5.7"
+    "vite": "^7.2.2"
   },
   "devDependencies": {
     "@types/react": "^19.2.5",
