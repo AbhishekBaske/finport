@@ -36,16 +36,17 @@ ALLOWED_ORIGINS=https://your-frontend-domain.vercel.app
 ```
 
 #### 3. **Deploy**
+Railway will automatically detect the `railway.json` configuration and deploy using RAILPACK:
 ```bash
-# Deploy to Railway
+# Deploy to Railway (optional - auto-deploys on git push)
 railway up
 ```
 
 #### 4. **Database Migration**
 ```bash
 # Run Prisma migrations on Railway
+railway run npm run build  # Generates Prisma client
 railway run npx prisma migrate deploy
-railway run npx prisma generate
 ```
 
 ---
@@ -86,10 +87,11 @@ Vercel will automatically detect:
 ## 🔧 Configuration Files Created
 
 ### Backend (Railway):
-- ✅ `Dockerfile` - Multi-stage production build
-- ✅ `railway.toml` - Railway-specific configuration
+- ✅ `railway.json` - Railway V2 configuration with RAILPACK builder
+- ✅ `Dockerfile` - Multi-stage production build (fallback)
 - ✅ `.dockerignore` - Optimized Docker builds
 - ✅ Health check endpoint at `/health`
+- ✅ Auto-scaling and multi-region deployment support
 
 ### Frontend (Vercel):
 - ✅ `vercel.json` - Vercel deployment configuration
