@@ -38,9 +38,9 @@ app.use('/api/user', userRoutes);
 // Attach WebSocket
 websocket(http);
 
-const PORT = process.env.PORT || 5000;
+const PORT = process.env.PORT || 4000;
 http.listen(PORT, '0.0.0.0', () => {
   console.log(`Backend server listening on port ${PORT}`);
   console.log(`Health check available at: http://localhost:${PORT}/health`);
-  console.log('Environment:', process.env.NODE_ENV);
+  console.log('Environment:', process.env.NODE_ENV || 'development');
 });
